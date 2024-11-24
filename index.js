@@ -10,9 +10,9 @@ app.use(express.urlencoded({ extended: true }));
 const PORT = 3300;
 
 const connection = mysql.createConnection({
-    host: 'localhost',      
-    user: 'root',           
-    password: '',           
+   host: 'express.app.render',      
+    user: 'Brenda666sosa',           
+    password: 'Brenda2004@@@',           
     database: 'phpmyadmin'  
 });
 
