@@ -10,11 +10,12 @@ app.use(express.urlencoded({ extended: true }));
 const PORT = 3300;
 
 const connection = mysql.createConnection({
-   host: 'express.app.render',      
-    user: 'Brenda666sosa',           
-    password: 'Brenda2004@@@',           
-    database: 'phpmyadmin'  
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
 });
+
 
 
 app.get('/', (req, res) => {
