@@ -7,13 +7,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-const PORT = 3300;
+const PORT = process.env.PORT || 3300;
 
 const connection = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD || '',
+    database: process.env.DB_NAME || 'phpmyadmin'
 });
 
 
@@ -79,10 +79,15 @@ app.get('/productos', (req, res) => {
     });
 });
 
-
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);  
 });
 
+process.on('SIGINT', () => {
+    connection.end(() => {
+        console.log('Conexión a la base de datos cerrada');
+        process.exit(0);
+    });
+});
 
 export default app;
