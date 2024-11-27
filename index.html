@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API de Videojuegos</title>
+</head>
+<body>
+  <h1>Bienvenido a la API de Videojuegos</h1>
+
+  <!-- Crear Videojuego -->
+  <h2>Crear Videojuego</h2>
+  <form id="crearVideojuegoForm">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" required>
+    <br>
+    <label for="genero">Género:</label>
+    <input type="text" id="genero" required>
+    <br>
+    <label for="plataforma">Plataforma:</label>
+    <input type="text" id="plataforma" required>
+    <br>
+    <button type="submit">Crear Videojuego</button>
+  </form>
+
+  <!-- Leer Videojuegos -->
+  <h2>Lista de Videojuegos</h2>
+  <button id="cargarVideojuegos">Cargar Videojuegos</button>
+  <ul id="listaVideojuegos"></ul>
+
+  <script>
+    const API_URL = 'http://localhost:3304';
+
+    // Crear Videojuego
+    document.getElementById('crearVideojuegoForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const nombre = document.getElementById('nombre').value;
+      const genero = document.getElementById('genero').value;
+      const plataforma = document.getElementById('plataforma').value;
+
+      fetch(`${API_URL}/crear-videojuegos`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, genero, plataforma })
+      })
+        .then(response => response.json())
+        .then(data => {
+          alert('Videojuego creado con éxito');
+          console.log('Videojuego creado:', data);
+        })
+        .catch(error => console.error('Error al crear el videojuego:', error));
+    });
+
+    // Leer Videojuegos
+    document.getElementById('cargarVideojuegos').addEventListener('click', function () {
+      fetch(`${API_URL}/videojuegos`)
+        .then(response => response.json())
+        .then(data => {
+          const lista = document.getElementById('listaVideojuegos');
+          lista.innerHTML = '';
+          data.forEach(videojuego => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `ID: ${videojuego.id}, Nombre: ${videojuego.nombre}, Género: ${videojuego.genero}, Plataforma: ${videojuego.plataforma}`;
+            lista.appendChild(listItem);
+          });
+        })
+        .catch(error => console.error('Error al obtener los videojuegos:', error));
+    });
+  </script>
+</body>
+</html>
+
